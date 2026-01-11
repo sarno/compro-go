@@ -1,7 +1,6 @@
 package config
 
 import (
-	"compro/database/seeds"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
@@ -34,8 +33,6 @@ func (cfg Config) ConnectDB() (*Postgres, error) {
 		log.Error().Err(err).Msg("[ConnectionPostgres-2] Failed to get database connection")
 		return nil, err
 	}
-
-	seeds.SeedAdmin(db)
 
 	sqlDB.SetMaxOpenConns(cfg.Psql.DBMaxOpen)
 	sqlDB.SetMaxIdleConns(cfg.Psql.DBMaxIdle)
