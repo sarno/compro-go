@@ -33,10 +33,12 @@ func RunServer() {
 	// emailMessage := messaging.NewEmailMessaging(cfg)
 
 	userRepo := repository.NewUserRepository(db.DB)
+
 	heroSectionRepo := repository.NewHeroSectionRepository(db.DB)
 
 	userService := service.NewUserService(userRepo, cfg, jwt)
 	heroSectionService := service.NewHeroSectionService(heroSectionRepo)
+
 
 	storageAdapter := storage.NewSupabase(cfg)
 
@@ -53,7 +55,10 @@ func RunServer() {
 
 	handler.NewUserHandler(e, userService)
 	handler.NewUploadImageHandler(e, storageAdapter, cfg)
+
 	handler.NewHeroSectionHandler(e, cfg, heroSectionService)
+
+
 
 	// Starting server
 	go func() {

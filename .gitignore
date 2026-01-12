@@ -1,3 +1,4 @@
+
 # Nuxt dev/build outputs
 .output
 .data
@@ -22,3 +23,29 @@ logs
 .env
 .env.*
 !.env.example
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.rpm
+*.deb
+*.o
+*.ko
+
+# Output of the go installer
+/dist
+
+# Compiled Go packages
+*.test
+*.out
+
+# Editor directories and files
+.idea/
+.vscode/
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+
