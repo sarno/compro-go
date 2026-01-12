@@ -1,0 +1,52 @@
+package conv
+
+import (
+	"compro/internal/core/domain/entity"
+	"net/http"
+	"strconv"
+
+	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
+)
+
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
+func StringToInt(s string) (int, error) {
+	newData, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+
+	return newData, nil
+}
+
+func SetHTTPStatusCode(err error) int {
+	if err == nil {
+		return http.StatusOK
+	}
+	switch err.Error() {
+	case ErrInternalServerError.Error():
+		return http.StatusInternalServerError
+	case ErrNotFound.Error():
+		return http.StatusNotFound
+	case ErrWrongEmailOrPassword.Error():
+		return http.StatusBadRequest
+	default:
+		return http.StatusInternalServerError
+	}
+}
+
+func GetUserIDByContext(ctx echo.Context) int64 {
+	u := ctx.Get("user")
+	claims := u.(*entity.JwtData)
+	return int64(claims.UserID)
+}
