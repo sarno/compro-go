@@ -4,6 +4,7 @@ import (
 	"compro/config"
 	"compro/internal/adapter/handler"
 	"compro/internal/adapter/repository"
+	"compro/internal/adapter/storage"
 	"compro/internal/core/service"
 	"compro/utils/auth"
 	"compro/utils/validator"
@@ -34,6 +35,8 @@ func RunServer() {
 	userRepo := repository.NewUserRepository(db.DB)
 	userService := service.NewUserService(userRepo, cfg, jwt)
 
+	storageAdapter := storage.NewSupabase(cfg)
+
 	e := echo.New()
 	e.Use(middleware.CORS())
 
@@ -46,6 +49,7 @@ func RunServer() {
 	})
 
 	handler.NewUserHandler(e, userService)
+	handler.NewUploadImageHandler(e, storageAdapter, cfg)
 
 	// Starting server
 	go func() {
