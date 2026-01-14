@@ -51,3 +51,12 @@ func GetUserIDByContext(ctx echo.Context) int64 {
 	claims := u.(*entity.JwtData)
 	return int64(claims.UserID)
 }
+
+func StringToInt64(s string) (int64, error) {
+	newData, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return newData, nil
+}
